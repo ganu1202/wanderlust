@@ -1,0 +1,170 @@
+1.Creating BoilerPlate
+
+	Now we are going to add basic styling to webpage we have created till now.
+
+
+	For that we are going to use pkg called EJS Mate.
+
+	What is EJS Mate?
+		helps to create layouts, we have set of common elements visible on website such as navbar,footer all these things are common on all webpages of a website.Instead of createing them multiple times , we can use EJS Mate.
+
+		We read about includes/partials while learning includes similar logic is of EJS Mate.
+
+
+		install it using cmnd- npm i ejs-mate, then require it in app.js.
+		In views folder we are going to create another folder called layouts.
+		In layouts folder we will create a file called boilerplate.ejs
+	-> BoilerPlate is a template that we add at start of your project.
+		write html boiler plate in boilerplate.ejs, with h3 text and title
+		
+		What we are trying to say is every webpage is going to look like boilerplate.ejs, yes content of every page changes such as edit,index,update all these have different content but if we set same boilerplate for all pages then content will also be same for all pages if we want to change the  content then we need to use.
+		
+			<% layout('boilerplate') -%>
+			<h1>I am the <%= what %> template</h1> 
+let' say we want same h1 line for all pages then we can write it in above format.
+First within boilerplate.ejs below line u want to display on all pages,add div with class container and with in div insert body tag.(import body of all other webpages)
+
+Now remove the all the other tags except body tag in index.ejs,write layout tag and run server then check if the text is visible on index page or not.
+
+similar thing u can do for show.ejs , c/o all tags except body and write layout tag
+
+So we reduced redundancy by removing some elements of boilerplate and added those in file called boilerplate.ejs , wherever we need it we just used layout tag there.
+
+To insert specific content of a webpage we used body tag.
+
+Now we will create  public folder to serve static files. Static files- serving images,css styling ,js logic to website with templates.
+
+Within public folder we will create a css folder and in css folder create a style.css file,writing code in style.css
+
+To use static files in app.js  write app.use code, now if we want to apply same styling to all webpages then no need of writing code in each of templates(edit,index etc..) we can add styling to boilerplate.ejs which is included in most of webpages.
+
+So in boilerplate.ejs link stlyesheet style.css, now u can see color appeared on all pages in which  have written layout tag.
+
+So we extracted common elements from all pages written in another.ejs and used EJS-Mate to add code in separate file to all webpages which redced redundancy.
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EJS-Mate is an extension for EJS (Embedded JavaScript) templates, which is a simple templating language that lets you generate HTML markup dynamically in JavaScript. EJS-Mate enhances EJS by adding additional features and utilities to make template development easier and more powerful.
+
+Some of the features provided by EJS-Mate include:
+
+Layouts: Allows you to define a layout template that contains common HTML structure shared across multiple pages. Individual pages can then extend or include this layout, reducing redundancy and making it easier to maintain consistent design across your website.
+
+Partials: Enables you to define reusable components or partials that can be included within other templates. This promotes modularity and code reusability in your application.
+
+Helpers: Provides helper functions that you can use within your templates to perform common tasks such as formatting dates, manipulating strings, or generating dynamic content.
+
+Filters: Allows you to define custom filters that modify or format data output in your templates. This can be useful for tasks like formatting currency, capitalizing text, or applying custom transformations.
+
+Caching: Supports template caching to improve performance by storing compiled templates in memory, reducing the need for repeated parsing and compilation.
+
+Overall, EJS-Mate extends the capabilities of EJS templates, making them more flexible and versatile for building dynamic web applications or generating HTML content server-side.
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+2.Navbar
+	Creating Navbar- 
+		on bootstrap website we have set of link include that in boilerplate.ejs
+
+			add cdn link of css and js in header tag and at end of body tag.
+
+		Now if u save and refresh the webpages  can see most common things font-size has changed becz we have included bootstrap which adds bit of custom styling.
+
+		Now if we want to use navbar,go on navbar page and select a simple one , there we have navbars implemented in two ways 
+
+		i) navbar implemented via ul
+		ii) navbar implemented via anchor tag
+
+		select ii) one and copy it and create another folder called includes in views folder and create navbar.ejs in includes folder ,paste copied code in navbar.ejs, we would have pasted the code in boilerplate.ejs itself but to maintain modularity , and if some changes we want to make to navabar or footer we can directly go to file navbar.ejs or footer.ejs and make changes .
+
+	But if we have added code for navbar or footer in all pages then there was need to go to all pages and make changes.
+
+	now after copying the code , in boilerplate.ejs add includes tag to for navbar.ejs
+
+	save and refresh u can see navbar on webpage.
+
+	Now it is visible on all webpages to  which boilerplate.ejs code is applied.
+		
+	Now make some changes in code navbar.ejs such as color from tertiary to light,change the options and c/o create new listing btn from index.ejs, becz as u click the otption add new listing of navbar u will be directed to same page where u were directed when u clicked on that btn.
+
+	remove active from Home option ,nav-link active	
+	as of now navbar is expanded only large screen but we want it to be expanded on medium screen and contracted of small screen so change navbar-expand-lg to navbar-expand-md
+
+	Instead of navbar text in navbar we want an icon to seen ,so on font-awesome webiste search for compass icon, copy its code and paste it in navabar.ejs in place of navbar text.to display icon copy cdn link of font-awesome and paste it in boilerplate.ejs
+as u click on icon u will be directed to home route.
+	
+	Now we will add bit ofcustom styling to whole navbar, so in style.css
+	
+3.Footer-
+	
+	create a footer.ejs in includes folder, we have created 3 divs in footer element
+	one for social media , 2nd one for company details 3rd for privacy and terms.
+	search for social media icons in font-awesome and paste their code in social-media div and style footer in style.css
+
+4.Style index
+
+	we have inbuilt cards on bootstrap we can just copy the code, and within index.js paste the code within the for loop so that u create one card for each for loop, change src of image to listing.image.
+
+	u can see different images on each card becz each list has diff image in db.
+	now we want list specific description so write listing.description and list tile and list price also.
+
+	increase size of card to 20rem,we want 3 cards to visible on single line so place for loop within class called row of div, row is bootstrap class.
+
+	give class row-cols-lg-3 to div in index.js means row-cols-lg-3 is a class that specifies the number of columns to display in a row for large screens (screen width equal to or greater than 992 pixels).
+
+	class col along with class card for inner div. When you apply the classes card and col to an element, each card will be displayed within a column (col) of the grid system. The col class is used to define the layout of columns within a row, and each card will occupy one column in the grid.For example, if you have a row with three columns (col) and you place three cards within that row, each card will occupy one column and will be visible within its respective column. This
+
+	But for medium size screen agn in 1 row n columns were displayed but if we want only three then specify class row-cols-md-2 to outer div.on sm sceen give row-cols-sm-1
+	let's give cutsom styling to cards so in style.css
+	
+The CSS object-fit property is used to specify how an <img> or <video> should be resized to fit its container. The CSS object-fit Property.
+
+The !important rule in CSS is used to add more importance to a property/value than normal.
+In fact, if you use the !important rule, it will override ALL previous styling rules for that specific property on that element.
+
+
+Now we want as we click on card is should be redirected to page showing details of listing
+so for that we can put the card in anchor tag , which redirects to show route.
+
+/* in bootstap we have class called card-image-overlay class to show text on image we will use that in index.ejs*/
+	
+	
+	
+5) Styling New Listing
+
+	now we will style add new listing webpage.
+	
+	add labels for all elements in form of new.ejs
+	
+	on bootstrap website within form section we have classes called form-label and form-control that we will copy and paste them label and input elements of new.ejs.
+
+	
+	to give spacing btw elements add class mb-3 to all divs and form is very large and width is more to descrease these things place whole form in row class of div and each div in a column class of div.
+
+	If screen is divided into 12 parts then we want form to take only 8 cols so specify a div with class col-8
+	
+	to give spacing from left(offset) add class offset-2 to div with class col-8
+
+	to bring price and country inputs on same line put them in div class row and we want price to take col-4 and country to take col-8
+
+	after a point size of price and country i/p descreases drastically so we want them to come separate line so give class col-md-8 means in medium and after medium we want it them to be on same line ,before medium on separate line
+
+
+	footer is not stick to bottom it is floating in air , so we want page to take 100% width and remaining space is to be occupied by footer for that give body d:f and flex-dire:col, min_hei:100vh, we have defined div with container class in which whole code gets embed in , to that container class  we will style give flex to 1 in style.css
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+The flex: 1 CSS property is a shorthand for setting three flex-related properties: flex-grow, flex-shrink, and flex-basis.
+
+flex-grow: Specifies how much a flex item will grow relative to the rest of the flex items inside the same container. A value of 1 means it will grow equally with other flex items. If all flex items have flex-grow set to 1, they will share the available space equally.
+flex-shrink: Specifies how much a flex item will shrink relative to the rest of the flex items inside the same container when there's not enough space. A value of 1 means it will shrink equally with other flex items.
+flex-basis: Specifies the initial size of the flex item before the remaining space is distributed. By setting flex-basis to 0 or a percentage, it allows flex items to grow or shrink to fill the available space.
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+6) Styling All listing-
+		
+	making changes to edit.js, as it has form similar thing we will do as we did in last form.
+
+7) Styling show listing-
+	
+	we will style show page of specific listing like a card so copy code of card from bootstrap and paste it in show.ejs
+	
+

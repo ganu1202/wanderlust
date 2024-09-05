@@ -1,0 +1,290 @@
+we will build a projec that includes frontend ,backend and database.
+
+This project will be divided into 3 phases 
+
+	In 1st phase we will make the basic setup and styling for it and we will also learn about middleware and validations which are topics of backend and learn how to apply them in project.
+
+
+	
+	In phase-1 we will build a website that will be similar to airbnb(vacation rental company). On airbnb we can create our own account and book hotels.we can also list our own house ,hotel for rent.To list house for rent we need to give the details of house ,hotel such as pitcures and price at which we want to rent house ,hotel.
+
+	The website that we are going to build won't be exact replica of airbnb.
+
+	
+	Firstly we are going to create listings means we are going to add things that we want to show or rent.
+
+	
+	After in other phases we will include users setup ,signUp with google and signup with facebook and also reviews.
+
+	
+	-> Getting Started
+
+		-> Database Set Up
+		-> REST Apis for CRUD- we will create apis using rest for performing CRUD operations on DBs.
+
+
+	-> Setting Up
+
+		so in vscode open folder called MAJORPROJECT and create pkg.json using npm init command in below terminal.
+
+		we will install express,ejs,mongoose (for connecting express with mongodb)and create app.js(using touch cmnd).	
+
+		write basic setup in app.js(in vscode).
+
+		1. require express,execute it which returns an obj (app) ,define port
+		2. require mongoose and ejs
+		3. listen to request using app obj on define port.
+		4. check the code by starting server.
+		5. create a basic api for route /(root) and in response send a text.
+		6. send a req to route / and u can see text we got in response and in terminal below.
+
+		7. now we will connect db to express before that every time u should check available dbs so within mongosh check available dbs by show dbs cmnd.U can see 6 dbs but still wanderlust db cannot be seen in that list.
+
+		8. to connect express with db write async func called main, await the connection , u can see url on mongodb website if u need which includes db name with which we want to connect.
+
+		9. call main function which returns a promise and apply then and catch mtd,save to restart the server and still wanderlust db can't be seen in mongosh dbs list becz u haven't added any collection in it.
+
+
+2) Listing Model-
+   	first model that we are going to create is listing , it is not like we are going to create a single model, we will create many models in coming phases.
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+"model" can be thought of as a representation of a collection in MongoDB.
+
+Collections in MongoDB:
+In MongoDB, data is stored in collections. A collection is a group of MongoDB documents. It is the equivalent of a table in a relational database.
+
+
+Mongoose Models:
+In Mongoose, which is an ODM (Object Data Modeling) library for MongoDB and Node.js, a "model" is a constructor function that has a schema. Each model corresponds to a collection in MongoDB. When you define a model in Mongoose, you're essentially creating a blueprint for documents in a MongoDB collection.
+
+Schema:
+A schema in Mongoose defines the structure of documents within a collection. It specifies the fields, data types, and other constraints for the documents. Each model in Mongoose is associated with a schema.
+
+In summary, while MongoDB uses the term "collection" to represent a group of documents, Mongoose introduces the concept of a "model" to represent collections and provides an interface to interact with them in a structured manner using schemas and predefined methods.
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+    -> Model: Listing- adding a places(apartment,flat,house,villa,hotel) with their details.
+	
+     Basic info that each place in listing should contain.	
+
+	* title- string datatype
+	* description- string datatype
+	* image- string datatype, instead of uploading and saving images ,as of now we are going to links of image.
+	* price- number datatype
+	* location0  string datatype
+	* country- string datatype, in other phases we will add filters by country.
+	
+	as we are going to create many models in coming phases , we will create all models within a folder called models.
+
+		In models folder we will create first model in file listing.js and we will export the model which will be required in app.js
+
+	1. in listing.js first require mongoose.
+	2. create a listingSchema.
+	3. using that schema we are going to create a model.
+	4. we will add some validations in schema such as required to title and default for image for this we will use new syntax of virtuals, to set and get properties we can write some funcs
+
+		to set default value of image we are going to use set: and we will write a arrow function where v is value of img.we will compare whether v is equal to empty string if it is we will assing link to it , if not empty then we will keep the value as v.
+
+			set:(v)=>v===" "?link:v -> this is called as ternary operator.
+
+		so write this in image and in place of link copy url of image from unsplash website and paste it.
+			
+		ternary operator is used to write small conditions.
+
+			
+		https://mongoosejs.com/docs/guide.html#virtuals
+	
+	
+	5. Now in app.js create new route called /testListing in which we are going to create a new doc by accessing exported model.
+	
+	6. in middleware func of route /testListing we are going define a new doc and save it in collection. in response we are sending a text to req and printing a stmnt in console.	
+	7. send a req to /testListing, u can see response text on webpage , doc saved into db(check by db.listings.find()), stmnt in terminal
+
+	8. in listingSchema in listing.js as of now we have defined the url of image if there is empty string, but we want to url to saved as default if url is not specifed only or undefined for that we need to set default with same url.
+		
+		we have set two logic for image one is image is not specifed or undefined or null and another one is image is there or exists but its url is empty.
+
+			1. not defined image	
+		
+				 let sampleListing=new Listing({
+        				title:"New Villa",
+        				description:"By the beach",
+       					 price:1200,
+        				location:"Calangute,Goa",       //as of now we ignored image 
+       					 country:"India"
+
+    				});this is when image option is not provided for user.
+
+			2. 
+				 let sampleListing=new Listing({
+        				title:"New Villa",
+        				description:"By the beach",	
+					image:"",
+       					 price:1200,
+        				location:"Calangute,Goa",       //as of now we ignored image 
+       					 country:"India"
+
+				});this is for client or user.
+
+
+3. 
+
+
+
+4.Initialize Database-
+  
+		we will initilaize database with some sample data for that create a folder called init in MAJORPORJECT, in folder we will intialize db in data.js file , in future if u cleanup whole db wanderlust and if u want to add some sample data agan then u can just run this data.js file.
+
+
+		Copy the sample data from link of apnacollege github provided in lec-3 and paste it in data.js file.
+
+		
+		this sample data is not written manually it is can generated using chatgpt,
+we can also use api also, but images url is we have copied and pasted manually.
+
+		u can see in data.js sampleListing is array of data ,which is exported at the end of file  data.js in form of object.
+
+		create another file called index.js in init folder in  which we will write code for intialization.
+
+		in index.js
+			1.require express, and require data.js becz we need data ,require model from listing.js in which schema and collection exists, and exstablish connection with mongodb.
+
+		Now we will create async arrow function which will stored initDB variable, in async arrow func first we will delete all exisisting data , and insert sample data of data.js using insertMany func
+
+		Now execute initDB() function and save stop and execute index.js server, check docs in listings colleciton in mongosh.
+
+		NOTE: as of now i have modifed sample data , i have modifed image from object to string i.e removed filename and url and kept only link as value of image. becz it was raising an error that expecting a string but got object.
+
+
+		whenver u cleanUp db u can just run this index.js file ,sample data will get inserted.
+
+		NOW we can perform CURD operations on it.
+
+
+
+5) Index Route-
+
+	we will accept get request on route- /listings , we will send all listings as response. c/o /testlisting route
+
+		GET 	/listings	-all listings.
+		
+	define a middleware func to handle req to /listings route in which as of now we are printing the result of listing.find()
+
+	start app.js server and send a req ot /listings u can see , u can see all data in below terminal.
+
+	now we will pass res by storing in variable allListings pass into ejs file in render mtd.
+
+	require path,set view engine to ejs , __dirname to views using app.set and  also create a folder called listings in views folder which will contain all the views or template related to listings.create a index.js file in listings folder in views folder , 
+	
+	in index.ejs write h2 text and send a req to /listing , index.ejs will get rendered
+
+	in index.ejs file create a list of all listings.
+	
+	firstly in each li we have printed title of listing as link. whenver u click on title link a get req will be sent to /listings/:id (show route).
+
+		GET	listings/:id	(show)-> to view specific listing data.
+
+		check by clicking on each title link , it will show Cannot GET /listings/6611040d6db50213f14fa8b becz we didn't handle req for this route yet but get req is bieng sent to specific listing thorugh id.
+
+		
+
+6) READ(Show Route)
+
+	READ:Show Route- show a data of specific listing.
+	
+		GET /listings/:id
+
+	so app.js write a middleware func to handle req to above route.
+	in that middleware func we will extract id from body of req and to parse data extracted through body of req, we will specify express.urlencoded 
+
+	using id we will find a specific listing ,which we will passed to show.ejs 
+	so create show.ejs in views,listings folder, in show.ejs we will write code to show all details of listing accept image.we will deal with image later.
+	
+	in app.js render show.ejs file and pass listing to it.
+
+	now open /listings page by sending a req to it and as u click on title link displayed , u can the details of that listing.
+
+	in displayed info about specific listing we need to modify how price is displayed so we need rupee symbol whose html entity is 	&#8377.so write it infront of price in show.ejs.
+
+	ex: 12,000 to show these commas we need to use function called tolocalString which converts number it to string with comma and we need to pass with which standard we are parsing.
+
+
+		num=12345
+		num.toLocaleString('en-IN');
+
+	
+	
+
+
+7) Create(New Create Route)
+	
+	
+	Create: New and Create Route
+
+		New Route- when a get req is sent /listing/new route a form will be rendered.as we submit the form a POST req will be sent to create route.
+		
+		
+			GET req to 	/listing/new
+
+			
+		Create Route-
+	
+			POST 	/listings.
+			
+		
+
+		so create a button in index.ejs for creating a new listing.
+
+		to handle req to/listing/new setup a middleware func in app.js in which we will render a form.ejs , write required code in form.ejs
+
+	
+		now to handle post req as u click on submit btn , setup a middleware func.
+	 
+		in this middleware func we will extract info from body of req 
+			one way for this is :
+			    let {title,description,image,price,county,location}=req.body;
+
+			another way is to make this title,image,price etc.... as key of listing object in new.ejs file. we can access this obj by req.body.listing, which will return a JS Object.
+
+			we will convert JS object to doc by new Listing(listing) and save it to collctions.
+
+
+8) Update Route-
+
+	Update: Edit and Update Route
+		
+	Edit 	GET 	/listings/:id/edit - a form will be rendered-> submit -> a put req will be sent to /listings/:id
+
+	so create a edit button in show.ejs, we will add edit as link , on clicking the link a req will be sent to /listings/:id/edit which will render a form.
+
+	setup a middleware func to handle req to this route.
+
+	in middleware func we extracted the id and body of req and passed it to edit.ejs in which data is used to show current data.
+
+	as we clikc on edit button a req will be sent to /listings/:id ,in middleware func of it we have extracted the id and updated listing data , then by finding the doc using id we have updated doc using put request
+
+	we have used method-override pkg becz html forms cannot send req other than get and post and query string (?_method=PUT) in action attribute of form in edit.ejs 
+
+	check once by updating and see on webpage that value have been update or not.
+	
+
+	
+
+	
+9)Delete: Delete Route
+
+	Delete  req	/listings/:id
+		
+	add delete button in show.ejs for each listing
+
+	
+
+
+	
+
+	
+
+	

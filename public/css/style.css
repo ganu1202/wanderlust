@@ -1,0 +1,181 @@
+body{
+    font-family: "Plus Jakarta Sans", sans-serif !important;
+    display: flex;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    flex-direction: column;
+}
+
+/* */
+.navbar{
+    height: 5rem;
+    background-color: #fff;
+}
+
+.fa-compass{
+    color:#fe424d;
+    font-size: 2rem;
+}
+
+.nav-link{
+    color:#222222 !important;
+    
+}
+
+
+.nav-link:hover{
+   font-weight: 600 !important; 
+}
+
+/* 1.increase height of navbar, give border-bottom class to nav element so that border is visible at bottom, give color to icon and increase its font-size by using class .fa-compass */
+/* 2. make color of options dark black, by giving custom styling to class .nav-link, !important ->overwrites the styling of bootstrap */
+/* 3. we can see that navbar is getting scrolled as u scroll down the listings  but we want it to be fixed whether u scroll or not for that add class sticky-top to nav element*/
+/* 4. as u scroll navbar is looking transparent  so give it bg-color of white */
+
+/* footer */
+.container{
+    flex: 1;
+}
+
+footer {
+    background-color: #ebebeb;
+    width: 100%;
+    text-align: center;
+    padding: 20px;
+    bottom: 0;
+}
+
+.f-info-links a{
+    text-decoration: none;
+    color:#222;
+}
+
+.f-info-links a:hover{
+    text-decoration: underline;
+}
+
+
+
+.f-info{
+    height: 8rem;
+    display: flex;
+    background-color: #ebebeb;
+    justify-content: center;
+    flex-wrap: wrap;
+    align-items: space-evenly;
+    text-align: center;
+}
+
+.f-info-socials,.f-info-links,.f-info-brand{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    vertical-align: middle;
+}
+
+/* .f-info-links{
+    width: 100%;
+} */
+
+
+.f-info-socials i{
+    font-size: 1.2rem;
+    margin-right: 0.7rem;
+}
+
+/* 1.change color and remove underline of a ,give underline only when we hover on a, make f-info display to flex.give footer some height and bg-color */
+/* 2.to bring all items of f-info to center give j-c and give width 100% to socials and links , but they didn't full width if we want them to take then give flex-wrap to wrap , align-items:s-e along the column */
+/* 3.to align all texts at center use text-align property , increase font-size of social media icons, with bit of spacing so give margin-right */
+/* 4.as of now social media icons are attached to start so give display:flex and j-c:c , a-i:c for them */
+/* 5.give same styling of icons and links to company details so add class brand to it in footer.ejs */
+
+/* Cards */
+.listing-card{
+    border: none !important;
+    margin-bottom: 2rem ;
+}
+
+.card-img-top{
+    border-radius: 1rem !important;
+    width: 100% !important;
+    object-fit: cover !important;
+}
+
+.card-body{
+    padding: 0.5rem!important;
+}
+
+.card-text{
+    font-weight: 400 !important;
+}
+
+.listing-link{
+    text-decoration: none;
+}
+
+
+
+/* 1.remove the bootstrap border of card and give margin-bottom , for imgs give b-r of 1rem, we want img to occupy full space of card w/o leaving any space so give width 100%, */
+/* The CSS object-fit property is used to specify how an <img> or <video> should be resized to fit its container. The CSS object-fit Property.
+/* selct font jakarta paste its link and css code in boilerplate.ejs and style.css, make the font-family and font-weight as important */
+/* make title bold so right it in bold tag ,to make imgs of same height give height as 20rem in index.ejs,remove width completely*/
+/* as we added each card in link so title appeared as a link to remove underline give t-d:none for class .listing-link */
+
+
+/* card effect-when hover over card */
+/* in bootstap we have class called card-image-overlay class to show text on image we will use that in index.ejs*/
+/* inital overlay opacity is 0 and as we hover it opacity will be 1 */
+.card-img-overlay{
+    opacity: 0;
+}
+
+.card-img-overlay:hover{
+    opacity: 0.2;
+    background-color: #fff;
+}
+
+/* new listing */
+
+.container{
+    flex:1;
+}
+
+.add{
+    background-color: #f3242d !important;
+    border: none !important;
+
+}
+
+/* edit-page */
+.edit-btn{
+    background-color: #f3242d !important;
+    border: none !important;
+}
+
+/* show-page */
+.show-img{
+    height: 30vh;
+
+}
+
+.btns{
+    display: flex;
+
+}
+
+.show-card{
+    padding-left: 0;
+    padding-right: 0;
+}
+
+/* map */
+#map { 
+     height: 400px;
+     width: 92vh;
+
+}
+
+
+

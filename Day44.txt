@@ -1,0 +1,208 @@
+1) Error Handling Middleware-
+
+	wkt whenever there is some issue with from client side or server side express default error handler handles an error.
+
+	But now we will learn how to throw custom error.
+
+		-> custom Error handling Middleware- Define error-handling middleware functions in the same way as other middleware functions, except error-handling functions have four arguments instead of three: (err, req, res, next).
+
+		app.use((err,req,next)=>{
+			console.log("----------ERROR-------------");
+			next(err);
+		}
+	
+
+		https://expressjs.com/en/guide/error-handling.html
+
+		Now in vscode we will write custom error handling middleware in day43 middelware's app.js folder.
+		
+		We have written  custom error handling middleware as there is error it will be handled by middleware, after handling the error if we want continue normal execution there we should write next(), but even though we have handled req to /abcd still it says cannot get /abcd, because when we write next() after handling error, it will search for next non-error-handling-middleware, so because of this when we write next() function inside error-handling-middleware ,we pass argument err also with next() function.
+
+		err in next() triggers express default error handler- meaning of writing this we have handled error now next either there is express default error handler or some other custom error handler will be handling the error.
+
+	 	
+		u can see when i wrote two custom error handling middleware, first two error handler were called then express default error handler was called.
+		
+		next()-calling non-error handling middleware,
+		next(error)- calling error handling middleware.
+
+2) Erro class-custom
+
+	as of now the error that will be displayed on webpage is not client-friendly so we will learn how to make it client-friendly by using error class.   
+
+	By default error-default handler returns 500 stauts code with error.
+
+	
+	Now we will use error class to send custom msg,custom status code.
+
+	https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
+	400-499->client error responses
+	  common:
+		400- Bad Request
+		404- Page not found
+		401- unauthorized, user is signed in but still he is trying to change password, changing profile pic.
+		403- forbidden. accessing website that is not permitted for students in college
+	
+	500-599	-server side error
+
+	now to create custom error class,create a file called expresserror.js in middleware folder.	create custom ExpressError class in it which extends express inbuilt Error class ,means we are inheriting properties and mtds of Error class in ExpressError class.
+
+	initialize status,msg in constructor of expresserror and export the ExpressError require it in app.js
+	
+	previosuly we thrown an access denied error using inbuilt error class,now we will throw that error using created custom error class.
+
+	and send a req to /api with giving token any value other than giveaccess u can see custom error is thrown and in console u can see stauts code is 401 not 500.
+
+	u can see in vscode terminal first two error-handling middleware executed after that access denied is printed.
+	
+	c/o one of error-handler and send the error generated as response to webpage see generated error on webpage 
+
+3) Default Status and message-
+
+	in last case we sent error object as response but it is not clear that it is an error so we will extract status and message from error object and then send it as response.
+
+	so in app.js within error handling middleware,we extract the status and msg frome err object and then we sent it as response.
+		
+	see msg on webpage and status on console.
+		
+	Now if we send a req to /abcd agn we can see along error msg,  it says that invalid status code:Undefined, because we haven't thrown an ExpressError for /abcd so within error-handling middleware while destructuting status_code will be undefined,so it raises an error.
+
+	but if we want to handle , we can assign a default value to status while destructing which will be used only when there status code defined for a specific route 
+	ex: no expresserror is thrown for /abcd so by default 500 will be used as we have assing it to status in error-handling middleware
+
+	similarly if no msg is also undefined then we can also give it default value,which will be used only if msg is undefined.
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Express defualt error handler.
+
+When an error is written, the following information is added to the response:
+
+The res.statusCode is set from err.status (or err.statusCode). If this value is outside the 4xx or 5xx range, it will be set to 500.
+The res.statusMessage is set according to the status code.
+The body will be the HTML of the status code message when in production environment, otherwise will be err.stack.
+Any headers specified in an err.headers object.
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+4) Acitivity-
+	Create a admin route and send a error with a 403 stauts code.
+
+	send a req to /admin
+	
+5) Handling Async errors-
+
+	 	till now we learnt how to handle errors of  normal routes but now we will learn how to handle async errors.
+
+		 		 copy whole MONGO3 folder of day-40 folder,where we learnt how to use express with mongodb, paste it in day44 folder
+		so we will change the name of db in url from whatsapp to fakewhatsapp in index.js and init.js
+
+		as of now fakewhatsapp db is not in list of dbs chech it in mongosh,run init.js ,now fakewhatsaap db added to list of dbs and also data got added.
+
+		we have created a new show route , in which we handled async request in whcih we extract id and then find chat related to it by awaiting , then render the edit.js to which we have sent extracted chat.
+
+		to send a req to show route add a btn in index.ejs of views folder
+		
+		now to handle async errors we have bit different steps that of normalerror:
+			why it is different to understand that first we will follow normal process to handle errors-
+
+		created a custom error class within expresserror.js file, export it ,require it in index.js then setup error-handling middleware,which extracts the status and msg from err obj and if they arre undfeined we have default values, then throw an expresserror in normal function(not async) i.e new route func.
+		
+		and then send a req to /chats/new, see a msg page not found got printed with status code in console, so normal way for error handling is working
+
+		but if we do same thing with async function i.e send a req to show route with id that doesn't exist,then chat won't be generated for that, if we didn't get chat then we will throw an  error with 404 code and some msg.
+	
+		send a req to /index u can all chats , as u click on show btn a req will be sent to /chats/:id i.e show route and u can see that chat, just make changes to id in url of specific post(don't manipulate the length just repalce characters by other letters) , here express didn't throw custom error that we have setup and server also got crashed.
+
+		so the error that we threw in async function that is not handled.
+
+		becz express whenever is error is thrown asynchronously by default express doesn't call next(), if next() is not called then error handling won't be done in proper way so  within aysnc function we need to called next() explicity,
+
+			so within show route now will throw an expresserror within next()
+u can see chat not found on webpage and 404 in console.
+
+		now if u c/o next function in show route and send a req to wrong id u can see error or code written edit.ejs template here error is not generated by neither mongoose nor express but by ejs
+
+6)try-catch
+	last case we handled id doesn't exist error now another case i.e validation error it will be raised when constraints that we have defined are voilated.
+
+	c/o throw err in new route ,and send a req by clicking new chat btn , w/o giving any details submit the form, u can see that Chat validation failed message in terminal. 
+	becz from,to were defined as required in schema.so when we try to save undefined value of from,to in db agan async validation error will be generated,so we can handle error  by adding the code in try and catch block, of index.js /chats route middleware.in catch block call next(err);
+
+	now submit form ,see error msg on webpage.
+
+	whathappened here as we submit the form w/o filling the details try block detected the error,catch block catches it and calls default err-handling middleware that we have defined,which handles error and sends err as response.
+
+
+	now every async function error can be handled like this, first do it for index route ,then edit and update route
+
+
+	use of writing all code of route in try block is every error that may occur in try block can detected and passed to catch block, if we just write (!chat) means it will only for chat or id doesn't exists, so better to write whole code of route in try block.
+
+	ex: if u don't wrap whole code in try block of show route only write !chat then only chat doesn't or id doesn't exists error will be handled ,wrong id won't be handled to handle that wrap code in try block.
+
+		and wkt w/o wrapping whole code in try block of show route if we senda req by making changes to length of url then server will crash but if we use try and catch it will be handled.
+
+	Cast to ObjectId failed for value "66178792f8db8d0921dcbd" (type string) at path "_id" for model "Chat"- here id not castable or searchable.
+
+use try-catch to detect all type of errors
+
+7) usin wrapAsync-
+	
+	till now we learnt how to handle normal error and then hanlded async errors by throwing custom errors ,then handling multiple types of errors using try-catch block
+
+	but using try-catch males code bit bulky, so we have functionality of another way of writing try-catch , i.e wrapAsync.
+
+	What will do is will create a function called wrapAsync to wrap async functions, wrapAsync function is unique function that will return another function, wrapAsync also takes function as argument.
+
+       returns a func->		function wrapAsync(fn){
+			
+this function executes fn -> 		return function(req,res,next){
+						//executing argument function 
+						fn(req,res,next).catch((err)=>next(err))
+					}
+				}
+		here total we have 3 funcs.
+
+
+	now in index.js define this wrapAsync function in same format,wrapAsync funtion returns a function to examine in console copy funciton wrapAsync and remove all parameters of fn, and also catch mtd,create a hello function that prints hello pass is as arg to wrapAsnc see it returned a function called hello().
+
+	now in show route handler we will remove try and catch and wrap whole callback in wrapasync function means we are passing a func as arg, 
+
+	Here we created a complex way instead of simple way to avoid using try-catch block which makes code bulky.
+
+	Now if u send a req by replacing char in url of chat ,still it handles the error.
+
+	now use wrapAynsc for all routes.
+
+8) Mongoose Errors-
+	
+	till now learnt handling most express errors by creating common-error-handling middleware.
+	
+	every err contains name of error which tells what type of error it is so to print name of error we will create a middleware function above previous error-handling-middleware  to print name of error.
+
+	first middleware to print name will be called then another one will be called.
+
+	
+	send a req w/o filling the form see name of error in console.see validation error in terminal.
+
+	now click in show btn of specific chat, add char to lenght of url and send a req now by clikcing submit btn see cast error in terminal.
+
+	we can handle specific error by creating specific error handler.for that we have written in first custom error-handler func
+
+	
+		
+	
+	
+	
+	
+	
+	
+		 
+
+			
+		
+		
+		
+		
+		
+
+		

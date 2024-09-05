@@ -1,0 +1,200 @@
+1.what are middlewares?
+	middlewares are used to perform some functionality after the request is sent and before response is sent.
+
+
+	-> It is an intermediary.
+
+	
+	REQUEST	--------> Middleware --------> RESPONSE
+
+	In general middleware is pgmming concept but in express it is a function.
+
+	-> in EXPRESS
+
+		-> Middleware in EXRESS are functions that come into play after server recieves the request and before the response is sent to client.
+
+
+	->Commom middleware functions:
+		
+	   *methodOverride- as html clients can't send req other than get,post it is used.
+	   *bodyParser- as server or express can't understand data contained in body of req.
+	   *express.static- to serve static files(css,js,img) of backend to frontend.
+	   *express.urlencoded- to access body of req.
+
+
+	   -> app.use(express.urlencoded({extended:true}));here urlencoded is a middleware function. This middleware function is responsible for parsing incoming requests with URL-encoded payloads. When a request is received by the server, but before it is passed to any route handlers, this middleware function intercepts the request and parses any URL-encoded data present in the request body. This is commonly used for processing form data submitted from HTML forms. The parsed data is then added to the req.body object, making it easier for route handlers to access and work with the form data.
+		
+	   -> app.use(express.static(path._join(__dirname,"/public")));here static is a middleware function. app.use applies this static mtd to all type of req and all paths and express.stagtic is a m.d becz static mtd access the public folder after request is reached server and before response is sent to client.
+
+	    special properties every middleware functions has:
+		i) middlewares can access req,res object(body of req etc...)
+		ii) chanining is possible in middlewares- means one function can send control to another function and in turn it sends control another function.If we have multiple functionalities to be done for a request then we can use multiple middlewares chanied together.
+	
+		iii) a middleware function can stop chainning by sending a response.
+		ex: in case of 3 middleware functions first one sends control to 2nd one and 2nd sends the response by stopping the chaining.
+
+		   In some case let'say we have defined a middleware and a get mtd to handle req which sends reponse , here middleware can send response so that req doesn't reach route/endpoint/api.
+	
+			 For example, authentication middleware might intercept a request, verify the user's credentials, and if authentication fails, send a response indicating unauthorized access, effectively stopping further processing of the request.
+
+	
+2)Our 1st Middleware
+
+	What do middlewars do?
+		Middleware functions can perform the following tasks:
+			-> Execute any code.
+			-> Make changes to request and response objects,like adding new parameter within res,req.
+			-> End req-res cycle. as res-res cycle ends after sending  a res, m.f can end it by sending a res.
+			-> Call the next middleware function in stack.
+
+	Our 1st middleware-	
+		=> app.use(middleware)- we are sending middleware in app.use so that it can be executed for all req.
+
+			-< Mounts the specified middleware function or functions at the specified path: the middleware function is executed when the base of the requested path matches path.
+			-< if path is not specified it will be executed for all paths.
+
+			app.use(()=>{
+				console.log('Hi iam a middleware');
+			});
+
+			In vscode middeware folder we have initalized pkg.json created app.js and required express , set up route handler for route / and /random, and setup a middleware function in app.use, now as we start server and send a req ,u can see page is loading continuosuly becz middleware function got executed and printed a stmnt in console and neither it sent a response to req nor called the next middleware.
+
+			
+
+
+
+			So middleware can peform 2 taks:i)send a response ii)call next m.f
+			 but if we send a req to / now u can see stmnt on webpage.it sends same response to /random even though we have defined different response for those routes separately, becz app.use sends a response all type of requests so req doesn't reach other 
+route handler.
+			req,res object m.f is same as of get mtd.
+			But generally middleware's function is to execute next function.
+			
+
+		=> using req and res object in middleware
+	
+			app.use((req,res)=>{
+				console.log('Hi am a middleware");
+			});
+
+
+3) Using next
+
+	The next middleware function is commonly deonted by variable called named next.
+
+		app.use((req,res,next)=>{
+			console.lg('Time',Date.now());
+			next();
+		});
+		
+		
+	If current middleware func doesn't end req-res cycle by sedning a response ,it must call next() to pass control to next middleware function.
+
+	We can classify middlewares based on there usage:
+		i)Application-level middleware
+		ii)router-level middleware
+		iii)error-handling middleware- add err parameter along with req,res,next
+		iv)built-in middleware- express.static,express.urlencoded,express.json
+		v)Third Party Middleware-
+
+		https://expressjs.com/en/guide/using-middleware.html
+
+	
+	https://blog.bitsrc.io/5-express-middleware-libraries-every-developer-should-know-94e2728f7503.
+	
+		now in vscode m.f c/o sent response and call next() func.so now when req is sent first it will reach m.f as it doesn't send any response and calling next() func,so control will be passed to next function, so if req is for path / it will be executed or if it is for /random ,it will be executed.
+
+	-> Code written after next() also executes, but it is not goodpracitce in pgmming.so we can write return next() so that if we write code after next() by mistake also it won't be executed.
+
+
+4)Creating Utility Middleware- useful middleware
+
+	
+	Logger- it is a function or functionality that is used to print useful info on console.
+
+		ex: to know the what type of request is sent(in mnc's logfile is kept to know what type of req is sent and when)and at what time response is sent to know lag, host name.
+
+		now c/o previously written m.f and write m.f in which we are printing mtd,path,host of req object.
+		
+		send a post ,patch req thorugh hoppscothch and see those mtd also got printed.
+		as we can access and make changes in req,res obj we will add a proprety time to know when it is sent and received.
+
+		If m.f is written after routehandler that response ,then m.f won't be executed becz routehandler will send a response if path matches,so we need to write m.f before routehandler.
+
+		A pkg which logs the info - morgan(a npm pkg)
+
+		to explore properties of req object refer:https://expressjs.com/en/5x/api.html#req
+
+		
+	
+5) Exploring app.use()-
+
+	m.f are passed as a callback to app.use()
+		Callback functions; can be:
+				A middleware function.
+				A series of middleware functions (separated by commas).
+				An array of middleware functions.
+				A combination of all of the above	
+
+		if specify path in app.use then it m.f is executed only for that path.
+		for root path(/)means for all paths m.f will be executed.
+		m.f can be used for authentication to protect other paths.
+		we can setup m.f if req is sent to path that is not handled.
+
+6) API Token as query String-
+	Let's Create a middleware for an api that checks if access token was pased in query string or not.
+
+	We learnt that few api's are free and few api's have token to access them, means these api's will send data only if token is present within query string.
+	
+	 we will use route called /api,if token=give access is sent as 	query string along with req then only data should be sent otherwise error should be shown.
+
+	
+	 we will setup route handler for route /api, and m.f to check  if the value of token is give access if it is we will call route handler for /api.
+		
+		
+7) Multiple Middlewares-
+
+	we can send multiple m.f to app.get and app.post etc
+
+		const checkToken=('/api',(req,res,next)=>{
+    			let {token}=req.query;
+    			if(token==="giveaccess"){
+        			next();
+    			}
+    			res.send("ACCESS DENIED!");
+		})
+
+			app.get('/api',checktoken,(req,res)=>{
+    				res.send('data');   //as of now string but in real cases it can be data from db
+			})
+	
+		here we stored defn in checktoken and passed it to app.get if checktoken in executed succesfully w/o error then data will be sent other wise error will be show.
+		
+		Now this checkToken will work only for /api not / or any other we haven't passed that checkToken in routehandler of route / or any other.
+
+7) Error Handling
+	
+	Handling Errors- to handler server side errors
+		
+		-> Express Defualt Error Handler.
+
+		so in vscode, create route handler for /abcd with body as abcd=abcd, send a req it will raise an error
+		
+		When error is raised when req is sent stack trace will be printed to show from where error has occured 
+	 at C:\Users\Ganesh\Desktop\WEB\Day43\Middleware\app.js:55:5, 55-line no,5-spaces
+	
+		send a req to /abcd thorgh hoppscotch u will see status code 500 which is not created by us but by express.
+	
+		https://expressjs.com/en/guide/error-handling.html- refer for info default error handler.
+
+		
+		So to present these error in good way ,we can through an error if an error is raised.
+
+		within route handler of /api ,use through keyword.but generally this way of throwing generic error is not used , we can create classes for that , and we can hide msg or stack trace if we want.
+
+The point is express has default error handler but if we want custom error should be thrown then it is possible.
+	   
+
+
+	
+
+	
