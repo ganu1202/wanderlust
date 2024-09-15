@@ -1,5 +1,5 @@
 const mongoose=require('mongoose');
-const {Schema}=mongoose; //instead of writing mongoose.Schema many  times we stored it in schema.
+const {Schema}=mongoose; //instead of writing mongoose.Schema many times we stored it in schema.
 const Review=require("./reviews.js");
 
 const listingSchema=new Schema({
@@ -13,6 +13,7 @@ const listingSchema=new Schema({
         url:String,
         filename:String,
     },
+    
     price:Number,
     location:String,
     country:String,

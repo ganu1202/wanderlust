@@ -23,6 +23,7 @@ router.route("/")
 //     res.send(req.file);
 // })
 
+
 //New route
 router.get('/new',isLoggedIn,listingController.renderform);
 

@@ -1,4 +1,4 @@
-{/* let mapToken="<%=process.env.MAP_TOKEN%>"; */}
+{let mapToken="<%=process.env.MAP_TOKEN%>"; }
     
 mapboxgl.accessToken = mapToken;
     console.log(mapToken);  //see mapToken in browser console.

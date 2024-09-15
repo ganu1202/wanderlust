@@ -63,6 +63,7 @@ const store=MongoStore.create({
 store.on("error",()=>{
     console.log("ERROR IN MONGO SESSION STORE",err);
 })
+
 const sessionOptions={
     store,
     secret:process.env.SECRET,
@@ -71,9 +72,10 @@ const sessionOptions={
     cookie:{
         expires:Date.now()*7*24*60*60*1000,
         maxAge: 7*24*60*60*1000,
-        httpOnly:true,
+        httpOnly:true,//security purpose
     }
 }
+
 
 // app.get("/",(req,res)=>{
 //     res.send('Hi Iam root');
@@ -86,11 +88,11 @@ app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 // use static authenticate method of model in LocalStrategy
-passport.use(new LocalStrategy(User.authenticate()));
+passport.use(new LocalStrategy(User.authenticate()));//all users will be authhenticated using local strategy
 
 // use static serialize and deserialize of model for passport session support
-passport.serializeUser(User.serializeUser());
-passport.deserializeUser(User.deserializeUser());
+passport.serializeUser(User.serializeUser());//for storing users to session so that no need to login again.
+passport.deserializeUser(User.deserializeUser());//for un-storing users from session.
 
 app.get("/demouser",async(req,res)=>{
     let fackeUser=new User({
