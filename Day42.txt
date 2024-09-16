@@ -6,7 +6,7 @@
 	For that we are going to use pkg called EJS Mate.
 
 	What is EJS Mate?
-		helps to create layouts, we have set of common elements visible on website such as navbar,footer all these things are common on all webpages of a website.Instead of createing them multiple times , we can use EJS Mate.
+		helps to create layouts, we have set of common elements visible on website such as navbar, footer all these things are common on all webpages of a website. Instead of creating them multiple times , we can use EJS Mate.
 
 		We read about includes/partials while learning includes similar logic is of EJS Mate.
 
@@ -22,9 +22,9 @@
 			<% layout('boilerplate') -%>
 			<h1>I am the <%= what %> template</h1> 
 let' say we want same h1 line for all pages then we can write it in above format.
-First within boilerplate.ejs below line u want to display on all pages,add div with class container and with in div insert body tag.(import body of all other webpages)
+First within boilerplate.ejs below line u want to display on all pages, add div with class container and with in div insert body tag.(import body of all other webpages)
 
-Now remove the all the other tags except body tag in index.ejs,write layout tag and run server then check if the text is visible on index page or not.
+Now remove the all the other tags except body tag in index.ejs, write layout tag and run server then check if the text is visible on index page or not.
 
 similar thing u can do for show.ejs , c/o all tags except body and write layout tag
 

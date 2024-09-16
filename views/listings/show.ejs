@@ -6,11 +6,10 @@
     <title>Wanderlust</title>
 </head> -->
 <% layout("/layouts/boilerplate.ejs")%>
-<script>
-    const mapToken="<%=process.env.MAP_TOKEN%>";
-    const listing ="<%- JSON.stringify(listing) %>";
+<script> 
+    const mapToken = "<%= process.env.MAP_TOKEN %>";
+    const listing =<%- JSON.stringify(listing) %>;
 </script>
-<body>
     <div class="row mb-3">
         <div class="col-8 offset-2 mt-3">
             <h2><%=listing.title%></h2>
@@ -96,12 +95,30 @@
     </div>
         <div class="col-8 offset-2 mb-3" >
             <h3>Where You'll be</h3>
-            <div id="map"></div>
+            <div id="map" data-map-token="<%= process.env.MAP_TOKEN %>"></div>
            
         </div>
         
   </div>
-</body>
-<!-- </html> -->
+<!-- <script src="/js/map.js"></script> -->
+<script>
+console.log(listing.geometry.coordinates)
+    let maptoken="<%=process.env.MAP_TOKEN%>";
+    mapboxgl.accessToken =maptoken;
+    const map = new mapboxgl.Map({
+        container: 'map', // container ID
+        style:"mapbox://styles/mapbox/streets-v12",
+        
+        center: listing.geometry.coordinates, // starting position [lng, lat]. Note that lat must be set between -90 and 90
+        zoom: 9 // starting zoom
+    });
 
-<script src="/js/map.js"></script>
+    const marker1 = new mapboxgl.Marker({color:'red'})
+        .setLngLat(listing.geometry.coordinates)
+        .setPopup(new mapboxgl.Popup({offset: 25 })
+        .setHTML(`<h4>${listing.location}</h4><p>Exact Location will be provided after booking</p> `)
+        .setMaxWidth("300px"))
+        .addTo(map)
+
+
+</script>

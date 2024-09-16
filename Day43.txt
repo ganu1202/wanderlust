@@ -11,7 +11,7 @@
 
 	-> in EXPRESS
 
-		-> Middleware in EXRESS are functions that come into play after server recieves the request and before the response is sent to client.
+		-> Middleware in EXPRESS are functions that come into play after server receives the request and before the response is sent to client.
 
 
 	->Commom middleware functions:
@@ -27,10 +27,10 @@
 	   -> app.use(express.static(path._join(__dirname,"/public")));here static is a middleware function. app.use applies this static mtd to all type of req and all paths and express.stagtic is a m.d becz static mtd access the public folder after request is reached server and before response is sent to client.
 
 	    special properties every middleware functions has:
-		i) middlewares can access req,res object(body of req etc...)
-		ii) chanining is possible in middlewares- means one function can send control to another function and in turn it sends control another function.If we have multiple functionalities to be done for a request then we can use multiple middlewares chanied together.
+		i) middleware can access req, res object(body of req etc...)
+		ii) chaining is possible in middlewares- means one function can send control to another function and in turn it sends control another function. If we have multiple functionalities to be done for a request then we can use multiple middlewares chained together.
 	
-		iii) a middleware function can stop chainning by sending a response.
+		iii) a middleware function can stop chaining by sending a response.
 		ex: in case of 3 middleware functions first one sends control to 2nd one and 2nd sends the response by stopping the chaining.
 
 		   In some case let'say we have defined a middleware and a get mtd to handle req which sends reponse , here middleware can send response so that req doesn't reach route/endpoint/api.
@@ -43,7 +43,7 @@
 	What do middlewars do?
 		Middleware functions can perform the following tasks:
 			-> Execute any code.
-			-> Make changes to request and response objects,like adding new parameter within res,req.
+			-> Make changes to request and response objects, like adding new parameter within res,req.
 			-> End req-res cycle. as res-res cycle ends after sending  a res, m.f can end it by sending a res.
 			-> Call the next middleware function in stack.
 
@@ -79,7 +79,7 @@ route handler.
 
 3) Using next
 
-	The next middleware function is commonly deonted by variable called named next.
+	The next middleware function is commonly denoted by variable called named next.
 
 		app.use((req,res,next)=>{
 			console.lg('Time',Date.now());
@@ -87,7 +87,7 @@ route handler.
 		});
 		
 		
-	If current middleware func doesn't end req-res cycle by sedning a response ,it must call next() to pass control to next middleware function.
+	If current middleware func doesn't end req-res cycle by sending a response ,it must call next() to pass control to next middleware function.
 
 	We can classify middlewares based on there usage:
 		i)Application-level middleware
@@ -103,7 +103,7 @@ route handler.
 	
 		now in vscode m.f c/o sent response and call next() func.so now when req is sent first it will reach m.f as it doesn't send any response and calling next() func,so control will be passed to next function, so if req is for path / it will be executed or if it is for /random ,it will be executed.
 
-	-> Code written after next() also executes, but it is not goodpracitce in pgmming.so we can write return next() so that if we write code after next() by mistake also it won't be executed.
+	-> Code written after next() also executes, but it is not good pracitce in pgmming.so we can write return next() so that if we write code after next() by mistake also it won't be executed.
 
 
 4)Creating Utility Middleware- useful middleware
@@ -118,7 +118,7 @@ route handler.
 		send a post ,patch req thorugh hoppscothch and see those mtd also got printed.
 		as we can access and make changes in req,res obj we will add a proprety time to know when it is sent and received.
 
-		If m.f is written after routehandler that response ,then m.f won't be executed becz routehandler will send a response if path matches,so we need to write m.f before routehandler.
+		If m.f is written after routehandler that response ,then m.f won't be executed becz routehandler will send a response if path matches, so we need to write m.f before routehandler.
 
 		A pkg which logs the info - morgan(a npm pkg)
 
@@ -141,7 +141,7 @@ route handler.
 		we can setup m.f if req is sent to path that is not handled.
 
 6) API Token as query String-
-	Let's Create a middleware for an api that checks if access token was pased in query string or not.
+	Let's Create a middleware for an api that checks if access token was passed in query string or not.
 
 	We learnt that few api's are free and few api's have token to access them, means these api's will send data only if token is present within query string.
 	
@@ -175,7 +175,7 @@ route handler.
 	
 	Handling Errors- to handler server side errors
 		
-		-> Express Defualt Error Handler.
+		-> Express Default Error Handler.
 
 		so in vscode, create route handler for /abcd with body as abcd=abcd, send a req it will raise an error
 		
@@ -189,7 +189,7 @@ route handler.
 		
 		So to present these error in good way ,we can through an error if an error is raised.
 
-		within route handler of /api ,use through keyword.but generally this way of throwing generic error is not used , we can create classes for that , and we can hide msg or stack trace if we want.
+		within route handler of /api ,use THROW keyword. But generally this way of throwing generic error is not used , we can create classes for that , and we can hide msg or stack trace if we want.
 
 The point is express has default error handler but if we want custom error should be thrown then it is possible.
 	   

@@ -2,7 +2,7 @@ const Listing=require("../models/listing");
 const mbxGeocoding = require('@mapbox/mapbox-sdk/services/geocoding');
 const mapToken=process.env.MAP_TOKEN;
 const geocodingClient=mbxGeocoding({accessToken:mapToken});
-
+ 
 
 module.exports.index=async (req,res)=>{
     // await Listing.find({}).then((res)=>{
@@ -12,7 +12,7 @@ module.exports.index=async (req,res)=>{
     res.render('listings/index.ejs',{allListings});
 };
 
-
+// console.log(mapToken);
 module.exports.renderform=(req,res)=>{
     // console.log(req.user);
     // if(!req.isAuthenticated()){

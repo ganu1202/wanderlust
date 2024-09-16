@@ -1,4 +1,4 @@
-require('dotenv').config();
+require('dotenv').config();//pkg helpful for managing env variables, env variables contain configuration settings such as database credentials, api keys, etc.. for security purpose.
 const express=require('express');           //require express
 const app=express()
 const port=8080;
@@ -108,7 +108,7 @@ app.get("/demouser",async(req,res)=>{
 app.use((req,res,next)=>{
     res.locals.success=req.flash("success");    
     res.locals.error=req.flash("error"); 
-    res.locals.currentUser=   req.user;
+    res.locals.currentUser=req.user;
     console.log(res.locals.success);    //success is an array
     next();
 })
